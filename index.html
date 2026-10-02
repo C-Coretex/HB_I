@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a1324" />
+  <title>Исаак — с Днём Рождения!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%231b7f65'/%3E%3Cstop offset='1' stop-color='%2309111e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M31 9c9 3 15 11 15 20 0 11-9 20-20 20-5 0-10-2-13-5 3 1 6 1 9 0 8-3 13-10 13-19 0-6-2-11-4-16z' fill='%23f7c968'/%3E%3Cpath d='M17 33h29v16H17z' fill='%23f7c968'/%3E%3Cpath d='M14 33h35v5H14z' fill='%23ee7187'/%3E%3Cpath d='M22 28c0-4 3-7 6-7s6 3 6 7' fill='none' stroke='%23f6f2e9' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='29' cy='19' r='2' fill='%23ee7187'/%3E%3C/svg%3E" />
+  <style>
+:root {
+  --bg: #07101e;
+  --bg-2: #0a1728;
+  --card: rgba(17, 31, 49, 0.74);
+  --text: #f6f2e9;
+  --muted: #b7c0cc;
+  --gold: #f7c968;
+  --gold-2: #e7a93f;
+  --emerald: #3dd5a0;
+  --line: rgba(255,255,255,.11);
+  --shadow: 0 24px 70px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(61,213,160,.12), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(247,201,104,.12), transparent 30%),
+    linear-gradient(135deg, var(--bg), var(--bg-2) 55%, #111126);
+  font-family: 'Manrope', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  pointer-events: none;
+  z-index: -3;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(61,213,160,.08), transparent 20%),
+    radial-gradient(circle at 70% 65%, rgba(247,201,104,.07), transparent 22%);
+  transform: translate3d(0, var(--bg-shift, 0px), 0) scale(1.08);
+  transition: transform .08s linear;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .18;
+  background-image:
+    linear-gradient(30deg, rgba(255,255,255,.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.03) 87.5%, rgba(255,255,255,.03)),
+    linear-gradient(150deg, rgba(255,255,255,.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.03) 87.5%, rgba(255,255,255,.03));
+  background-size: 72px 124px;
+  z-index: -2;
+}
+
+.noise {
+  position: fixed; inset: 0; pointer-events: none; z-index: 20; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+main { position: relative; }
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 100;
+  background: rgba(255,255,255,.04);
+  pointer-events: none;
+}
+.scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--emerald), var(--gold), #ee7187);
+  box-shadow: 0 0 18px rgba(247,201,104,.45);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(80px) scale(.97);
+  filter: blur(8px);
+  transition: opacity .9s cubic-bezier(.2,.75,.2,1), transform 1s cubic-bezier(.2,.75,.2,1), filter 1s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+.hero-parallax {
+  --parallax-y: 0px;
+}
+.hero-parallax .hero-copy { transform: translateY(calc(var(--parallax-y) * -0.08)); }
+.hero-parallax .photo-frame { transform: translateY(calc(var(--parallax-y) * 0.12)) rotate(2.1deg); }
+
+.section-pad { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+.arabic-bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+.phrase { position: absolute; color: rgba(255,255,255,.055); font-family: 'Amiri', serif; white-space: nowrap; user-select: none; }
+.p1 { top: 8%; left: -2%; font-size: clamp(50px, 8vw, 130px); transform: rotate(-8deg); }
+.p2 { top: 35%; right: -5%; font-size: clamp(40px, 7vw, 105px); transform: rotate(7deg); }
+.p3 { bottom: 22%; left: 5%; font-size: clamp(44px, 7vw, 100px); transform: rotate(-12deg); }
+.p4 { top: 63%; right: 18%; font-size: clamp(32px, 5vw, 80px); transform: rotate(9deg); }
+.p5 { bottom: 3%; left: 35%; font-size: clamp(35px, 5vw, 78px); transform: rotate(-5deg); }
+
+.hero { min-height: 94vh; display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; padding-top: 65px; padding-bottom: 80px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border: 1px solid rgba(247,201,104,.28); border-radius: 999px; color: #f6dda4; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; background: rgba(247,201,104,.05); }
+.eyebrow span { color: var(--gold); }
+.arabic-title { font-family: 'Amiri', serif; color: var(--gold); font-size: clamp(30px, 5vw, 60px); line-height: .9; margin: 35px 0 14px; text-shadow: 0 0 28px rgba(247,201,104,.15); }
+h1 { font-size: clamp(58px, 7vw, 106px); line-height: .92; letter-spacing: -.055em; margin: 0; }
+h1 span { color: var(--gold); }
+.hero-subtitle { max-width: 650px; margin: 30px 0 34px; color: var(--muted); font-size: clamp(16px, 2vw, 19px); line-height: 1.75; }
+
+.photo-frame { position: relative; min-height: 575px; padding: 15px; border-radius: 28px; background: linear-gradient(145deg, rgba(255,255,255,.19), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.16); box-shadow: var(--shadow); }
+.photo-frame img { width: 100%; height: 100%; min-height: 545px; object-fit: cover; border-radius: 19px; display: block; }
+.photo-glow { position: absolute; inset: -1px; border-radius: 30px; background: linear-gradient(160deg, rgba(61,213,160,.28), transparent 35%, rgba(247,201,104,.2)); filter: blur(1px); pointer-events: none; }
+.photo-caption, .photo-card span { position: absolute; left: 26px; bottom: 26px; padding: 9px 12px; border-radius: 9px; background: rgba(7,16,30,.78); backdrop-filter: blur(8px); border: 1px solid var(--line); color: #eae5d9; font-size: 11px; }
+.tilt-right { transform: rotate(2.1deg); }
+.tilt-left { transform: rotate(-1.7deg); }
+
+.section-label { color: var(--emerald); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .16em; margin-bottom: 24px; }
+.message { padding-top: 70px; padding-bottom: 140px; }
+.message-grid { display: grid; grid-template-columns: 90px 1fr; gap: 25px; align-items: start; }
+.quote-mark { color: var(--gold); font: 800 100px/.7 Georgia, serif; }
+.message-text { max-width: 950px; font-size: clamp(25px, 4vw, 49px); font-weight: 700; letter-spacing: -.035em; line-height: 1.16; }
+.message-text p { margin: 0 0 35px; }
+.message-text p:last-child { margin-bottom: 0; color: #d7dde7; }
+
+.photo-story { padding-bottom: 145px; }
+.photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 65px; align-items: center; }
+.photo-card { position: relative; min-height: 550px; padding: 15px; border-radius: 28px; background: rgba(255,255,255,.06); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.photo-card img { width: 100%; height: 100%; min-height: 520px; display: block; object-fit: cover; border-radius: 19px; }
+.side-copy h2 { font-size: clamp(40px, 5vw, 68px); line-height: .96; letter-spacing: -.05em; margin: 18px 0 24px; }
+.side-copy h2 em { color: var(--gold); font-style: normal; }
+.side-copy > p { color: var(--muted); font-size: 18px; line-height: 1.75; max-width: 540px; }
+.side-copy strong { color: #f1ddab; }
+.arabic-badge { display: inline-block; padding: 10px 14px; border-radius: 999px; background: rgba(61,213,160,.1); border: 1px solid rgba(61,213,160,.22); color: #a7f1d6; font: 700 22px 'Amiri', serif; }
+.word-joke { position: relative; width: 240px; height: 135px; margin-top: 38px; transform: rotate(5deg); }
+.paper { position: absolute; inset: 0; border-radius: 9px; background: #f5efe0; box-shadow: 0 15px 35px rgba(0,0,0,.22); }
+.paper-back { transform: translate(-14px, 8px) rotate(-8deg); opacity: .35; }
+.paper-mid { transform: translate(-7px, 4px) rotate(-3deg); opacity: .65; }
+.paper-front { display: grid; place-content: center; text-align: center; color: #182233; font: 800 15px 'Manrope', sans-serif; transform: rotate(-2deg); }
+.paper-front b { font-size: 28px; margin-top: 4px; }
+
+.future { padding-bottom: 145px; }
+.future h2 { font-size: clamp(45px, 6vw, 78px); letter-spacing: -.05em; margin: 0 0 45px; }
+.prediction-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.prediction-card { position: relative; min-height: 270px; padding: 28px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); backdrop-filter: blur(10px); overflow: hidden; }
+.prediction-card::after { content:""; position:absolute; width:130px; height:130px; right:-60px; top:-50px; border-radius:50%; background: rgba(61,213,160,.13); }
+.prediction-card.featured { transform: translateY(-14px); border-color: rgba(247,201,104,.4); box-shadow: 0 20px 55px rgba(0,0,0,.2); }
+.prediction-icon { font-size: 35px; margin-bottom: 28px; }
+.prediction-card h3 { margin: 0 0 11px; font-size: 22px; }
+.prediction-card p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+.finale { padding-bottom: 80px; }
+.final-card { position: relative; overflow: hidden; padding: clamp(35px, 7vw, 85px); border-radius: 34px; background: radial-gradient(circle at 80% 20%, rgba(247,201,104,.17), transparent 28%), linear-gradient(145deg, rgba(25,48,65,.95), rgba(8,18,31,.95)); border: 1px solid rgba(247,201,104,.2); box-shadow: var(--shadow); text-align: center; }
+.corner-pattern { position: absolute; inset: -120px; background: repeating-conic-gradient(from 30deg, transparent 0 12deg, rgba(61,213,160,.035) 12deg 14deg); opacity: .8; }
+.final-card > * { position: relative; }
+.arabic-final { color: var(--gold); font: 700 clamp(23px, 4vw, 42px) 'Amiri', serif; margin: 0 0 22px; }
+.final-card h2 { margin: 0; font-size: clamp(38px, 6vw, 78px); line-height: .98; letter-spacing: -.05em; }
+.final-note { max-width: 720px; margin: 30px auto 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+.signature { margin-top: 36px; color: #f8ead0; font-size: 16px; font-weight: 800; }
+.signature span { color: #ef6c82; }
+
+footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 25px 0 35px; display:flex; justify-content:center; align-items:center; gap:20px; color:#7f8a99; font-size:12px; text-align:center; }
+
+.confetti { position: fixed; top: -18px; width: 8px; height: 13px; z-index: 50; pointer-events: none; border-radius: 2px; animation: fall linear forwards; }
+@keyframes fall { to { transform: translate3d(var(--x), 105vh, 0) rotate(var(--r)); opacity: .1; } }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; gap: 45px; padding-top: 45px; }
+  .photo-frame { min-height: 430px; max-width: 720px; width: 100%; margin: 0 auto; }
+  .photo-frame img { min-height: 400px; }
+  .message-grid { grid-template-columns: 45px 1fr; }
+  .photo-grid { grid-template-columns: 1fr; gap: 50px; }
+  .photo-card { min-height: 430px; }
+  .photo-card img { min-height: 400px; }
+  .prediction-grid { grid-template-columns: 1fr; }
+  .prediction-card.featured { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+  body::after { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .section-pad, footer { width: min(100% - 24px, 1180px); }
+  .hero { padding-top: 26px; padding-bottom: 65px; }
+  .eyebrow { font-size: 9px; }
+  h1 { font-size: clamp(50px, 15vw, 74px); }
+  .arabic-title { margin-top: 25px; }
+  .hero-subtitle { font-size: 15px; line-height: 1.65; }
+  .photo-frame { padding: 9px; min-height: 390px; }
+  .photo-frame img { min-height: 370px; border-radius: 15px; }
+  .message { padding-bottom: 100px; }
+  .message-grid { grid-template-columns: 1fr; gap: 4px; }
+  .quote-mark { height: 44px; font-size: 70px; }
+  .message-text { font-size: 28px; }
+  .message-text p { margin-bottom: 25px; }
+  .photo-story, .future { padding-bottom: 105px; }
+  .photo-card { min-height: 360px; padding: 9px; }
+  .photo-card img { min-height: 340px; border-radius: 15px; }
+  .side-copy h2 { font-size: 45px; }
+  .side-copy > p { font-size: 15px; }
+  .final-card { padding: 34px 20px 40px; border-radius: 24px; }
+  .final-card h2 { font-size: 40px; }
+  footer { flex-direction: column; padding-top: 10px; }
+  .p2, .p4 { display: none; }
+}
+
+/* Extended photo gallery */
+.gallery { padding-bottom: 145px; }
+.gallery-heading { display: flex; justify-content: space-between; gap: 45px; align-items: end; margin-bottom: 38px; }
+.gallery-heading h2 { font-size: clamp(44px, 6vw, 78px); line-height: .95; letter-spacing: -.05em; margin: 18px 0 0; }
+.gallery-heading h2 em { color: var(--gold); font-style: normal; }
+.gallery-heading > p { max-width: 420px; margin: 0 0 4px; color: var(--muted); line-height: 1.8; }
+.gallery-grid { display: grid; grid-template-columns: 1.15fr .85fr .85fr; grid-auto-rows: 235px; gap: 16px; }
+.gallery-card { position: relative; overflow: hidden; border-radius: 24px; min-height: 220px; border: 1px solid var(--line); background: rgba(255,255,255,.05); box-shadow: 0 22px 60px rgba(0,0,0,.22); }
+.gallery-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .8s cubic-bezier(.2,.75,.2,1), filter .8s ease; }
+.gallery-card:hover img { transform: scale(1.07); filter: saturate(1.12); }
+.gallery-card span { position: absolute; left: 18px; bottom: 18px; padding: 8px 11px; border-radius: 999px; font-size: 11px; background: rgba(7,16,30,.7); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); }
+.gallery-card.g1 { grid-row: span 2; }
+.gallery-card.g5 { grid-column: 1 / -1; min-height: 588px; }
+
+/* Birthday poem */
+.poem { padding-bottom: 145px; }
+.poem-card { position: relative; overflow: hidden; max-width: 920px; margin: 0 auto; padding: clamp(35px, 6vw, 72px); border-radius: 34px; background: linear-gradient(145deg, rgba(25,48,65,.92), rgba(8,18,31,.96)); border: 1px solid rgba(61,213,160,.22); box-shadow: var(--shadow); text-align: center; }
+.poem-card::before { content: ''; position: absolute; inset: 16px; border: 1px solid rgba(247,201,104,.12); border-radius: 25px; pointer-events: none; }
+.poem-decoration { position: absolute; top: 21px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 14px; }
+.poem-card .arabic-final { margin-bottom: 30px; }
+.poem-text { position: relative; margin: 0 auto 28px; color: #ece8de; font-family: 'Amiri', serif; font-size: clamp(22px, 3vw, 31px); line-height: 1.48; }
+.poem-text:last-child { margin-bottom: 0; color: #f6d98a; }
+
+/* Scroll confetti burst */
+.scroll-confetti { position: fixed; width: 10px; height: 15px; z-index: 80; pointer-events: none; border-radius: 2px; will-change: transform, opacity; animation: scroll-burst 1.45s cubic-bezier(.14,.72,.25,1) forwards; }
+@keyframes scroll-burst {
+  0% { opacity: 1; transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  55% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--rot)) scale(.72); }
+}
+
+@media (max-width: 900px) {
+  .gallery-heading { flex-direction: column; align-items: flex-start; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 220px; }
+  .gallery-card.g1 { grid-row: span 2; }
+  .gallery-card.g5 { grid-column: 1 / -1; min-height: 550px; }
+}
+
+@media (max-width: 600px) {
+  .gallery, .poem { padding-bottom: 105px; }
+  .gallery-heading h2 { font-size: 46px; }
+  .gallery-heading > p { font-size: 15px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 170px; gap: 10px; }
+  .gallery-card { min-height: 160px; border-radius: 17px; }
+  .gallery-card.g1 { grid-row: span 2; }
+  .gallery-card.g5 { grid-column: 1 / -1; min-height: 425px; }
+  .poem-card { padding: 48px 19px 32px; border-radius: 24px; }
+  .poem-card::before { inset: 9px; border-radius: 18px; }
+  .poem-text { font-size: 21px; line-height: 1.42; margin-bottom: 24px; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="arabic-bg" aria-hidden="true">
+    <span class="phrase p1">عيد ميلاد سعيد</span>
+    <span class="phrase p2">كل عام وأنت بخير</span>
+    <span class="phrase p3">مبروك</span>
+    <span class="phrase p4">أحلام كبيرة</span>
+    <span class="phrase p5">إلى الأمام</span>
+  </div>
+
+  <div class="lantern lantern-a" aria-hidden="true"></div>
+  <div class="lantern lantern-b" aria-hidden="true"></div>
+  <div class="spark-field" aria-hidden="true"></div>
+
+  <main>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+    <section class="hero section-pad reveal hero-parallax">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>✦</span> сегодня твой день <span>✦</span></div>
+        <p class="arabic-title" dir="rtl">عيد ميلاد سعيد!</p>
+        <h1>Исаак,<br><span>с Днём Рождения!</span></h1>
+        <p class="hero-subtitle">Сегодня можно официально стать ещё на один год мудрее.</p>
+      </div>
+
+      <div class="hero-photo-frame photo-frame tilt-right">
+        <div class="photo-glow"></div>
+        <img src="images/photo-1.jpeg" alt="Здесь будет фотография Исаака">
+        <div class="photo-caption">место для легендарного фото</div>
+      </div>
+    </section>
+
+    <section class="message section-pad reveal">
+      <div class="section-label">01 / главное</div>
+      <div class="message-grid">
+        <div class="quote-mark">“</div>
+        <div class="message-text">
+          <p>Уже такой взрослый дядя, мне до такого расти и расти ещё.</p>
+          <p>Пусть у тебя все получится на твоем арабском пути, бака получится интересной и сложной, что в Лейдене тебя сразу профессором поставят, и чтобы нашу программу потом использовали все ученые.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-story section-pad reveal">
+      <div class="section-label">02 / архив будущего</div>
+      <div class="photo-grid">
+        <div class="photo-card large tilt-left">
+          <img src="images/photo-2.jpeg" alt="Здесь будет ещё одна фотография Исаака">
+          <span>доказательство, что мы здесь были</span>
+        </div>
+        <div class="side-copy">
+          <div class="arabic-badge" dir="rtl">كل عام وأنت بخير</div>
+          <h2>Самый упорный<br><em>человек, которого я знаю.</em></h2>
+          <p>Если что-то решил или придумал — то точно это доведёшь до конца.</p>
+          <p>Особенно если это связано с <strong>печатаньем кучи страниц в Ворде.</strong></p>
+          <div class="word-joke" aria-hidden="true">
+            <span class="paper paper-back"></span>
+            <span class="paper paper-mid"></span>
+            <span class="paper paper-front">Ctrl + P<br><b>× 847</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery section-pad reveal">
+      <div class="section-label">03 / больше доказательств</div>
+      <div class="gallery-heading">
+        <div>
+          <div class="arabic-badge" dir="rtl">ذكريات جميلة</div>
+          <h2>Ещё немного<br><em>фотодоказательств.</em></h2>
+        </div>
+        <p>Сюда можно поставить лучшие, самые странные и просто любимые фотографии. Все семь мест уже готовы.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-card g1"><img src="images/photo-3.jpeg" alt="Фотография Исаака 3"><span>место №3</span></div>
+        <div class="gallery-card g2"><img src="images/photo-4.jpeg" alt="Фотография Исаака 4"><span>место №4</span></div>
+        <div class="gallery-card g3"><img src="images/photo-5.jpeg" alt="Фотография Исаака 5"><span>место №5</span></div>
+        <div class="gallery-card g4"><img src="images/photo-6.jpeg" alt="Фотография Исаака 6"><span>место №6</span></div>
+        <div class="gallery-card g5"><img src="images/photo-7.jpeg" alt="Фотография Исаака 7"><span>место №7</span></div>
+      </div>
+    </section>
+
+    <section class="future section-pad reveal">
+      <div class="section-label">04 / официальное предсказание</div>
+      <h2>Что тебя ждёт дальше</h2>
+      <div class="prediction-grid">
+        <article class="prediction-card featured">
+          <div class="prediction-icon">🎓</div>
+          <h3>Лейден</h3>
+          <p>Чтобы сразу приняли профессором.</p>
+        </article>
+        <article class="prediction-card">
+          <div class="prediction-icon">🇳🇱</div>
+          <h3>Нидерланды</h3>
+          <p>Чтобы понравились и было где погулять.</p>
+        </article>
+        <article class="prediction-card">
+          <div class="prediction-icon">🐉</div>
+          <h3>Майнкрафт</h3>
+          <p>Чтобы мы в итоге победили Эндер дракона наконец.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="poem section-pad reveal">
+      <div class="poem-card">
+        <div class="poem-decoration">✦</div>
+        <div class="arabic-final" dir="rtl">بارك الله في طريقك</div>
+        <p class="poem-text">В этот день родился ты,<br>
+          Чтоб в мир добавить красоты -<br>
+          Сердца, духа, тела, мыслей.<br>
+          Так просто все не перечислить.</p>
+        <p class="poem-text">Тебе желаем в этот день<br>
+          Побольше счастья, чтобы тень<br>
+          Печали лик не омрачала.<br>
+          Пусть будут новые начала.</p>
+        <p class="poem-text">Пусть Бог благословит пути,<br>
+          Что пролегают впереди.<br>
+          Пусть правит всем любовь и мир.<br>
+          Устрой крутой сегодня пир!</p>
+      </div>
+    </section>
+
+    <section class="finale section-pad reveal">
+      <div class="final-card">
+        <div class="corner-pattern"></div>
+        <p class="arabic-final" dir="rtl">أحلام كبيرة، خطوات ثابتة</p>
+        <h2>Больших тебе целей,<br>интересных дорог<br>и сил всё это довести до конца.</h2>
+        <p class="final-note">Ну и чтобы программу однажды использовали все учёные.</p>
+        <div class="signature">С днём рождения! <span>♥</span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>عيد ميلاد سعيد — С Днём Рождения</span>
+    </footer>
+  </main>
+
+  <script>
+const palette = ['#f7c968', '#3dd5a0', '#f2f0e8', '#ee7187', '#8aa9ff'];
+
+function launchConfetti(count = 90) {
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'confetti';
+    el.style.left = `${Math.random() * 100}vw`;
+    el.style.background = palette[Math.floor(Math.random() * palette.length)];
+    el.style.width = `${5 + Math.random() * 6}px`;
+    el.style.height = `${8 + Math.random() * 9}px`;
+    el.style.animationDuration = `${2.2 + Math.random() * 2.8}s`;
+    el.style.animationDelay = `${Math.random() * 0.45}s`;
+    el.style.setProperty('--x', `${-180 + Math.random() * 360}px`);
+    el.style.setProperty('--r', `${360 + Math.random() * 1000}deg`);
+    el.style.transform = `rotate(${Math.random() * 180}deg)`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+  }
+}
+
+function launchScrollConfetti(element, count = 34) {
+  if (prefersReducedMotion) return;
+
+  const rect = element.getBoundingClientRect();
+  const originX = Math.max(24, Math.min(window.innerWidth - 24, rect.left + rect.width / 2));
+  const originY = Math.max(80, Math.min(window.innerHeight - 80, rect.top + Math.min(rect.height * 0.25, 160)));
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'scroll-confetti';
+    el.style.left = `${originX}px`;
+    el.style.top = `${originY}px`;
+    el.style.background = palette[Math.floor(Math.random() * palette.length)];
+    el.style.width = `${5 + Math.random() * 8}px`;
+    el.style.height = `${8 + Math.random() * 11}px`;
+    el.style.setProperty('--dx', `${-240 + Math.random() * 480}px`);
+    el.style.setProperty('--dy', `${50 + Math.random() * 390}px`);
+    el.style.setProperty('--rot', `${-540 + Math.random() * 1080}deg`);
+    el.style.animationDelay = `${Math.random() * 110}ms`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1750);
+  }
+}
+
+function launchScrollConfettiAtViewport(count = 10) {
+  const originX = window.scrollY > 0 ? window.innerWidth / 2 : window.innerWidth * 0.78;
+  const originY = 35 + Math.random() * 85;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'scroll-confetti';
+    el.style.left = `${originX + (-90 + Math.random() * 180)}px`;
+    el.style.top = `${originY}px`;
+    el.style.background = palette[Math.floor(Math.random() * palette.length)];
+    el.style.width = `${4 + Math.random() * 6}px`;
+    el.style.height = `${7 + Math.random() * 9}px`;
+    el.style.setProperty('--dx', `${-180 + Math.random() * 360}px`);
+    el.style.setProperty('--dy', `${110 + Math.random() * 260}px`);
+    el.style.setProperty('--rot', `${-720 + Math.random() * 1440}deg`);
+    el.style.animationDuration = `${0.8 + Math.random() * 0.55}s`;
+    el.style.animationDelay = `${Math.random() * 45}ms`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1500);
+  }
+}
+
+const progressBar = document.querySelector('.scroll-progress span');
+const hero = document.querySelector('.hero-parallax');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function updateScrollEffects() {
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+  progressBar.style.transform = `scaleX(${progress})`;
+
+  if (!prefersReducedMotion && hero) {
+    const shift = Math.min(window.scrollY * 0.2, 180);
+    hero.style.setProperty('--parallax-y', `${shift}px`);
+    document.documentElement.style.setProperty('--bg-shift', `${Math.min(window.scrollY * -0.035, 70)}px`);
+  }
+}
+
+let ticking = false;
+let lastScrollConfetti = 0;
+window.addEventListener('scroll', () => {
+  const now = performance.now();
+
+  if (!prefersReducedMotion && now - lastScrollConfetti >= 75) {
+    lastScrollConfetti = now;
+    launchScrollConfettiAtViewport(10);
+  }
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updateScrollEffects();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      launchScrollConfetti(entry.target, entry.target.classList.contains('hero') ? 22 : 38);
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.13, rootMargin: '0px 0px -10% 0px' });
+
+document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+
+updateScrollEffects();
+
+window.addEventListener('load', () => setTimeout(() => launchConfetti(65), 450));
+
+  </script>
+</body>
+</html>
